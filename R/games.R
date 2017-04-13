@@ -12,15 +12,21 @@ cfl_games <- function(season = NA, game_id = NA, foptions = list()) {
   
   if(!missing(url)) {
     url <- paste0(url, '?key=', api_key)
+  } else {
+    stop('There was an error building the url')
   }
   
   games_call <- GET(url, foptions)
   stop_for_status(games_call)
   games_data_JSON <- content(games_call)
   if(length(games_call) == 0) {
-    games_data <- data.frame()
+    games_data <- tbl_df()
   } else {
-    games_data <- data.frame(rbindlist(games_data_JSON))
+    games_data <- dplyr::bind_rows(
+      lapply(1:length(games_data_JSON$data), 
+             function(x) flatten_single_game(games_data_JSON$data[[x]])
+      )
+    )
   }
   
   if (nrow(games_data) == 0) {
