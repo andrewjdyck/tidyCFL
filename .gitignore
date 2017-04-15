@@ -35,3 +35,4 @@ vignettes/*.pdf
 
 # API Key file
 cfl_key.txt
+cfl_key.R

@@ -1,4 +1,12 @@
 
+#' Query for CFL game information
+#' @param season Required passed parameter for the football season.
+#' @param game_id Optional passed parameter for the football game id.
+#' @return Returns a tibble with game information
+#' @examples \dontrun{
+#' cfl_games(season = 2016, game_id = 2280)
+#' }
+#' @export
 cfl_games <- function(season = NA, game_id = NA, foptions = list()) {
   if (is.na(season)) {
     stop("A season year is required to find game_id data", call. = FALSE)
@@ -10,17 +18,13 @@ cfl_games <- function(season = NA, game_id = NA, foptions = list()) {
                   '/game/', game_id)
   }
   
-  if(!missing(url)) {
-    url <- paste0(url, '?key=', api_key)
-  } else {
-    stop('There was an error building the url')
-  }
+  url <- tidyCFL.build_url(url)
   
-  games_call <- GET(url, foptions)
-  stop_for_status(games_call)
-  games_data_JSON <- content(games_call)
+  games_call <- httr::GET(url, foptions)
+  httr::stop_for_status(games_call)
+  games_data_JSON <- httr::content(games_call)
   if(length(games_call) == 0) {
-    games_data <- tbl_df()
+    games_data <- dplyr::tbl_df()
   } else {
     games_data <- dplyr::bind_rows(
       lapply(1:length(games_data_JSON$data), 

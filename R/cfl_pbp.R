@@ -3,20 +3,19 @@ cfl_plays <- function(season = NA, game_id = NA, foptions = list()) {
   if (is.na(season)) {
     stop("A season year is required", call. = FALSE)
   } else if (!is.na(season) && is.na(game_id)) {
-    # url <- paste0('http://api.cfl.ca/v1', '/games/',
-    #               season)
     stop('A game_id is required', call. = FALSE)
   } else {
     url <- paste0('http://api.cfl.ca/v1', '/games/', season, 
                   '/game/', game_id)
   }
   
-  if(!missing(url)) {
-    url <- paste0(url, '?key=', api_key, '&include=play_by_play')
-  } else {
-    stop('There was an error building the url')
-  }
+  # if(!missing(url)) {
+  #   url <- paste0(url, '?key=', api_key, '&include=play_by_play')
+  # } else {
+  #   stop('There was an error building the url')
+  # }
   
+  url <- tidyCFL.build_url(url)
   games_call <- GET(url, foptions)
   stop_for_status(games_call)
   games_data_JSON <- content(games_call)

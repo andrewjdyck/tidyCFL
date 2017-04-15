@@ -1,5 +1,6 @@
 export(cfl_games)
 export(cfl_plays)
+export(tidyCFL.api_key)
 import(jsonlite)
 importFrom(assertthat,are_equal)
 importFrom(assertthat,assert_that)
