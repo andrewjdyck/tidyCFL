@@ -11,7 +11,8 @@ Imports:
   httr,
   assertthat,
   jsonlite,
-  dplyr
+  dplyr,
+  tibble
 LazyData: yes
 URL: http://www.github.com/andrewjdyck/tidyCFL
 BugReports: http://www.github.com/andrewjdyck/tidyCFL/issues/new
