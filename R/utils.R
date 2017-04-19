@@ -32,11 +32,11 @@ flatten_play_by_play <- function(single_play_JSON) {
 extract_game_data_for_pbp <- function(single_game_JSON) {
   home <- ifelse(single_game_JSON$team_1$is_at_home, "team_1", "team_2")
   away <- ifelse(home == 'team_1', 'team_2', 'team_1')
-  result <- tibble(
+  result <- dplyr::tbl_df(data.frame(
     game_id = single_game_JSON$game_id,
     home_team = single_game_JSON[[home]]$abbreviation,
     away_team = single_game_JSON[[away]]$abbreviation
-  )
+  ))
   return(result)
 }
 

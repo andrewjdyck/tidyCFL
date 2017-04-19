@@ -6,14 +6,8 @@ cfl_plays <- function(season = NA, game_id = NA, foptions = list()) {
     stop('A game_id is required', call. = FALSE)
   } else {
     url <- paste0('http://api.cfl.ca/v1', '/games/', season, 
-                  '/game/', game_id)
+                  '/game/', game_id, '?include=play_by_play')
   }
-  
-  # if(!missing(url)) {
-  #   url <- paste0(url, '?key=', api_key, '&include=play_by_play')
-  # } else {
-  #   stop('There was an error building the url')
-  # }
   
   url <- tidyCFL.build_url(url)
   games_call <- GET(url, foptions)
@@ -24,7 +18,7 @@ cfl_plays <- function(season = NA, game_id = NA, foptions = list()) {
   pbp_JSON <- games_data_JSON$data[[1]]$play_by_play
   
   if(length(games_call) == 0) {
-    pbp_data <- tbl_df()
+    pbp_data <- dplyr::tbl_df()
   } else {
     pbp_data <- dplyr::bind_rows(
       lapply(1:length(pbp_JSON),
@@ -35,6 +29,6 @@ cfl_plays <- function(season = NA, game_id = NA, foptions = list()) {
     stop("No data found", call. = FALSE)
     NULL
   } else {
-    tbl_df(cbind(game_data, pbp_data))
+    dplyr::tbl_df(cbind(game_data, pbp_data))
   }
 }
