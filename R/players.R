@@ -1,7 +1,9 @@
 
-cfl_players <- function(player_id, foptions = list()) {
+cfl_players <- function(player_id=NA, foptions = list()) {
   if (is.na(player_id)) {
     stop("A cfl central player ID is required", call. = FALSE)
+  } else if (tolower(player_id) == 'all') {
+    url <- paste0('http://api.cfl.ca/v1', '/players')
   } else {
     url <- paste0('http://api.cfl.ca/v1', '/players/', player_id, 
                   '?include=seasons,game_by_game,current_team')
@@ -11,9 +13,16 @@ cfl_players <- function(player_id, foptions = list()) {
   players_call <- GET(url, foptions)
   stop_for_status(players_call)
   player_data_JSON <- content(players_call)
-  player_data <- player_data_JSON$data[[1]][1:15]
-  player_seasons <- player_data_JSON$data[[1]]$seasons
-  player_game_data <- player_data_JSON$data[[1]]$game_by_game
+  
+  if (tolower(player_id) == 'all') {
+    out_data <- player_data_JSON$data[[1]]
+  } else {
+    player_data <- player_data_JSON$data[[1]][1:15]
+    player_seasons <- player_data_JSON$data[[1]]$seasons
+    player_game_data <- player_data_JSON$data[[1]]$game_by_game
+    out_data <- player_data
+  }
+  
   
   # if(length(games_call) == 0) {
   #   pbp_data <- dplyr::tbl_df()
@@ -29,5 +38,5 @@ cfl_players <- function(player_id, foptions = list()) {
   # } else {
   #   dplyr::tbl_df(cbind(game_data, pbp_data))
   # }
-  return(player_data_JSON)
+  return(out_data)
 }
