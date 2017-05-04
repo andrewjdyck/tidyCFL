@@ -3,7 +3,7 @@ cfl_players <- function(player_id=NA, foptions = list()) {
   if (is.na(player_id)) {
     stop("A cfl central player ID is required", call. = FALSE)
   } else if (tolower(player_id) == 'all') {
-    url <- paste0('http://api.cfl.ca/v1', '/players')
+    url <- paste0('http://api.cfl.ca/v1', '/players','/?page[size]=50&page[number]=108')
   } else {
     url <- paste0('http://api.cfl.ca/v1', '/players/', player_id, 
                   '?include=seasons,game_by_game,current_team')
@@ -15,7 +15,7 @@ cfl_players <- function(player_id=NA, foptions = list()) {
   player_data_JSON <- content(players_call)
   
   if (tolower(player_id) == 'all') {
-    out_data <- player_data_JSON$data[[1]]
+    out_data <- player_data_JSON$data
   } else {
     player_data <- player_data_JSON$data[[1]][1:15]
     player_seasons <- player_data_JSON$data[[1]]$seasons
