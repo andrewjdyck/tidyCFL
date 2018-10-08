@@ -1,5 +1,15 @@
 
-cfl_players <- function(player_id=NA, foptions = list()) {
+#' Query for CFL player information
+#' @param player_id Required parameter for the CFL player ID.
+#' @param type Future parameter for the type of player lookup (ie. general, game data, season summary)
+#' @return Returns a tibble with game information
+#' @examples \dontrun{
+#' cfl_players(138985)
+#' }
+#' @export
+#' @importFrom httr stop_for_status GET content
+#' @importFrom dplyr bind_rows tbl_df
+cfl_players <- function(player_id=NA, type='meta') {
   if (is.na(player_id)) {
     stop("A cfl central player ID is required", call. = FALSE)
   } else if (tolower(player_id) == 'all') {
@@ -10,33 +20,28 @@ cfl_players <- function(player_id=NA, foptions = list()) {
   }
   
   url <- tidyCFL.build_url(url)
-  players_call <- GET(url, foptions)
+  players_call <- GET(url)
   stop_for_status(players_call)
   player_data_JSON <- content(players_call)
   
   if (tolower(player_id) == 'all') {
-    out_data <- player_data_JSON$data
-  } else {
+    outdata <- player_data_JSON$data
+  } else if(tolower(type) == 'meta') {
     player_data <- player_data_JSON$data[[1]][1:15]
-    player_seasons <- player_data_JSON$data[[1]]$seasons
-    player_game_data <- player_data_JSON$data[[1]]$game_by_game
-    out_data <- player_data
+    outdata <- cbind(
+      dplyr::bind_rows(player_data[1:12]),
+      school = player_data$school$name,
+      offence_defence_or_special = player_data$position$offence_defence_or_special,
+      position = player_data$position$description,
+      team_curr = player_data$team$abbreviation
+    )
+    # player_seasons <- player_data_JSON$data[[1]]$seasons
+    # player_game_data <- player_data_JSON$data[[1]]$game_by_game
+    outdata <- dplyr::tbl_df(outdata)
+  } else {
+    # In the future, season and game detail data will go here
+    outdata <- dplyr::tbl_df()
   }
   
-  
-  # if(length(games_call) == 0) {
-  #   pbp_data <- dplyr::tbl_df()
-  # } else {
-  #   pbp_data <- dplyr::bind_rows(
-  #     lapply(1:length(pbp_JSON),
-  #            function(x) flatten_play_by_play(pbp_JSON[[x]])))
-  # }
-  # 
-  # if (nrow(pbp_data) == 0) {
-  #   stop("No data found", call. = FALSE)
-  #   NULL
-  # } else {
-  #   dplyr::tbl_df(cbind(game_data, pbp_data))
-  # }
-  return(out_data)
+  return(outdata)
 }

@@ -7,7 +7,9 @@
 #' cfl_games(season = 2016, game_id = 2280)
 #' }
 #' @export
-cfl_games <- function(season = NA, game_id = NA, foptions = list()) {
+#' @importFrom httr stop_for_status GET content
+#' @importFrom dplyr bind_rows tbl_df
+cfl_games <- function(season = NA, game_id = N) {
   if (is.na(season)) {
     stop("A season year is required to find game_id data", call. = FALSE)
   } else if (!is.na(season) && is.na(game_id)) {
@@ -20,7 +22,7 @@ cfl_games <- function(season = NA, game_id = NA, foptions = list()) {
   
   url <- tidyCFL.build_url(url)
   
-  games_call <- httr::GET(url, foptions)
+  games_call <- httr::GET(url)
   httr::stop_for_status(games_call)
   games_data_JSON <- httr::content(games_call)
   if(length(games_call) == 0) {
