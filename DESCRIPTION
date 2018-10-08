@@ -7,14 +7,12 @@ Authors@R: c(person("Andrew", "Dyck", role = c("aut", "cre"), email = "andrew@an
 Description: A tidydata package for the official Canadian Football League API
 Depends:
   R (>= 2.15)
-Imports:
-  httr,
-  assertthat,
-  jsonlite,
-  dplyr,
-  tibble
+Imports: httr, jsonlite, dplyr, tibble
 LazyData: yes
 URL: http://www.github.com/andrewjdyck/tidyCFL
 BugReports: http://www.github.com/andrewjdyck/tidyCFL/issues/new
 License: MIT
+Encoding: UTF-8
 oxygenNote: 5.0.1
+RoxygenNote: 6.1.0
+Suggests: testthat
