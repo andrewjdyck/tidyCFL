@@ -9,7 +9,7 @@
 #' @export
 #' @importFrom httr stop_for_status GET content
 #' @importFrom dplyr bind_rows tbl_df
-cfl_games <- function(season = NA, game_id = N) {
+cfl_games <- function(season = NA, game_id = NA) {
   if (is.na(season)) {
     stop("A season year is required to find game_id data", call. = FALSE)
   } else if (!is.na(season) && is.na(game_id)) {

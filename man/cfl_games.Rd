@@ -4,7 +4,7 @@
 \alias{cfl_games}
 \title{Query for CFL game information}
 \usage{
-cfl_games(season = NA, game_id = N)
+cfl_games(season = NA, game_id = NA)
 }
 \arguments{
 \item{season}{Required passed parameter for the football season.}

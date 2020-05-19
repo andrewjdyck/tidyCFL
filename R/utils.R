@@ -20,7 +20,8 @@ flatten_single_game <- function(single_game_JSON) {
     home_team = single_game_JSON[[home]]$abbreviation,
     away_team = single_game_JSON[[away]]$abbreviation,
     home_score = single_game_JSON[[home]]$score,
-    away_score = single_game_JSON[[away]]$score
+    away_score = single_game_JSON[[away]]$score,
+    stringsAsFactors = FALSE
   )
   return(dplyr::tbl_df(cbind(result1, result2)))
 }
