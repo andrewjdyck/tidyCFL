@@ -13,6 +13,9 @@ set the API key with tidyCFL.api_key('YOUR API KEY')
 # Usage
 
 ```{r}
+library(tidyCFL)
+library(dplyr)
+
 tidyCFL.api_key('testK3Y')
 games2016 <- cfl_games(2016)
 
@@ -29,5 +32,6 @@ player1 <- cfl_players(player_id)
 
 # Play by play
 pbp <- cfl_plays(season = 2016, game_id = 2280)
+
 
 ```

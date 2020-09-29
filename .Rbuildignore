@@ -3,3 +3,6 @@
 ^testdata$
 testdata
 .travis.yml
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
