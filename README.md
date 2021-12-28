@@ -1,8 +1,10 @@
 # tidyCFL
+
 A tidy data package for the Canadian Football League API
 
 
 ## API info
+
 An API key is required and can be requested [here](http://api.cfl.ca/key-request).
 
 Documentation for the CFL API can be found [here](http://api.cfl.ca/docs).
